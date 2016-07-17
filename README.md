@@ -63,8 +63,8 @@ graphWidthSecondary | String |           | The thickness of the line being plott
 graphHeight         | Number |           | Height of the graph. Defaults to a little less than the screen height.
 graphWidth          | Number |           | Width of the graph. Default to a little less than the screen width.
 paddingBottom       | Number |           | Space underneath the graph.
-xAxisDensity        | Number |           | Number of tick-marks on the x-Axis.
-yAxisDensity        | Number |           | Number of tick-marks on the y-Axis.
+xAxisDensity        | Number |           | Number of tick-marks on the x-Axis plus 1.
+yAxisDensity        | Number |           | Number of tick-marks on the y-Axis plus 1.
 xUnit               | String |           | Unit for x-Axis values.
 yUnit               | String |           | Unit for y-Axis values.
 
@@ -72,7 +72,9 @@ yUnit               | String |           | Unit for y-Axis values.
 The Graph component has special behaviors when xUnit is set to "date". If this
 is the case, the x values of the data prop will be treated as Unix time values
 given in milliseconds, and the graph will display these values as dates instead
-of numbers.
+of numbers. An example is displayed below with xAxisDensity set to 2.
+
+![example](./Images/example2.png)
 
 
 
