@@ -50,5 +50,5 @@ var GraphTestProject = React.createClass({
 ```
 
 You should get something like this:
-![example](./Images/example1)
+![example](./Images/example1.png)
 
