@@ -52,3 +52,28 @@ var GraphTestProject = React.createClass({
 You should get something like this:
 ![example](./Images/example1.png)
 
+####Props
+Name                | Type   | Required? | Description
+--------------------|--------|-----------|--------------
+data                | Array  |  √        | An array of coordinate pairs in the form [x,y].
+graphColorPrimary   | String |  √        | The color of the coordinate axes.
+graphColorSecondary | String |  √        | The color of the line being plotted.
+graphWidthPrimary   | String |           | The thickness of the coordinate axes.
+graphWidthSecondary | String |           | The thickness of the line being plotted.
+graphHeight         | Number |           | Height of the graph. Defaults to a little less than the screen height.
+graphWidth          | Number |           | Width of the graph. Default to a little less than the screen width.
+paddingBottom       | Number |           | Space underneath the graph.
+xAxisDensity        | Number |           | Number of tick-marks on the x-Axis.
+yAxisDensity        | Number |           | Number of tick-marks on the y-Axis.
+xUnit               | String |           | Unit for x-Axis values.
+yUnit               | String |           | Unit for y-Axis values.
+
+####Date Mode
+The Graph component has special behaviors when xUnit is set to "date". If this
+is the case, the x values of the data prop will be treated as Unix time values
+given in milliseconds, and the graph will display these values as dates instead
+of numbers.
+
+
+
+

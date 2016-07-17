@@ -18,8 +18,8 @@ import Svg, {
 const Graph = React.createClass({
     propTypes: {
         data: PropTypes.array.isRequired,
-        graphColorPrimary: PropTypes.string,
-        graphColorSecondary: PropTypes.string,
+        graphColorPrimary: PropTypes.string.isRequired,
+        graphColorSecondary: PropTypes.string.isRequired,
         graphWidthPrimary: PropTypes.string,
         graphWidthSecondary: PropTypes.string,
         graphHeight: PropTypes.number,
