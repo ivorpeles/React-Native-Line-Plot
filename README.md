@@ -55,9 +55,9 @@ You should get something like this:
 ####Props
 Name                | Type   | Required? | Description
 --------------------|--------|-----------|--------------
-data                | Array  |  √        | An array of coordinate pairs in the form [x,y].
-graphColorPrimary   | String |  √        | The color of the coordinate axes.
-graphColorSecondary | String |  √        | The color of the line being plotted.
+data                | Array  |  Yes      | An array of coordinate pairs in the form [x,y].
+graphColorPrimary   | String |  Yes      | The color of the coordinate axes.
+graphColorSecondary | String |  Yes      | The color of the line being plotted.
 graphWidthPrimary   | String |           | The thickness of the coordinate axes.
 graphWidthSecondary | String |           | The thickness of the line being plotted.
 graphHeight         | Number |           | Height of the graph. Defaults to a little less than the screen height.
