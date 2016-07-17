@@ -116,7 +116,7 @@ const Graph = React.createClass({
         const v = arr[1][1];
         // The slope of the line segment, and the perpendicular slope.
         const slope = (v - y) / (u - x);
-        const perp = -1.0 / slope;
+        const perp = -1 / slope ;
         // The euclidean distance between (x,y) and (u,v)
         const d = Math.sqrt(Math.pow(u-x, 2) + Math.pow(v-y, 2));
         // w and e are the width and extension factors respectively for the
@@ -148,7 +148,7 @@ const Graph = React.createClass({
         const w = this.state.width;
         const h = String(this.state.height);
         const ha = String(this.state.height - 5);
-        const spacing = w / ( 1.0 * ticks ); 
+        const spacing = w / ticks ; 
         var outputStr = "";
         for (var i = 1; i < ticks; i++) {
             outputStr += "M" + String(i * spacing) + " " + h + " "
