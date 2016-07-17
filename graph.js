@@ -13,7 +13,7 @@ import Svg, {
     Polygon,
     Path
 } from 'react-native-svg';
-
+var _ = require('lodash');
 
 const Graph = React.createClass({
     propTypes: {
@@ -143,60 +143,47 @@ const Graph = React.createClass({
         return outputStr;
     },
     render: function () {
+        var that = this;
         const dateMode = (this.props.xUnit == "date") ? 1 : 0;
-        const h = this.state.height;
-        const graphColorSecondary = this.props.graphColorSecondary
         var rData = this.props.data;
         var data = this.getProcessedData();
-        const yDensity = this.props.yAxisDensity || 9;
-        const yVisualSpacing = (this.state.height)
-            / (yDensity);
 
-        var yArr = [];
-        for (var i = 0; i < data.length; i++){
-            yArr.push(rData[i][1]);
-        }
+        const yDensity = this.props.yAxisDensity || 9;
+        const yVisualSpacing = this.state.height / yDensity;
+        var yArr = rData.map((obj) => { return obj[1] });
         const yMax = Math.max(...yArr);
         const yMin = Math.min(...yArr);
         const yRange = yMax - yMin;
-        const yNumericalSpacing = yRange / (yDensity);
-        var dummyYArr = [];
-        for (var i = 1; i < yDensity; i++){
-            dummyYArr.push(1);
-        }
+        const yNumericalSpacing = yRange / yDensity;
+
         const xDensity = this.props.xAxisDensity || 6;
         const xVisualSpacing = (this.state.width) / (xDensity);
-        var xArr = [];
-        for (var i = 0; i < data.length; i++){
-            xArr.push(rData[i][0]);
-        }
-        const xMax = Math.max(...xArr);
+        var xArr = rData.map((obj) => {return obj[0]});
         const xMin = Math.min(...xArr);
-        const xRange = xMax - xMin;
-        const xNumericalSpacing = xRange / (xDensity);
-        var dummyXArr = [];
-        for (var i = 1; i < xDensity; i++){
-            var time = Math.round(xMin + (xNumericalSpacing * i));
-            var date = new Date(time);
-            var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+        const xRange = Math.max(...xArr) - xMin;
+        const xNumericalSpacing = xRange / xDensity;
+        xArr = _.range(xDensity - 1).map((obj) => {
+            const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
                 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            var time = Math.round(xMin + (xNumericalSpacing * obj));
+            var date = new Date(time);
             var dateStr = months[date.getUTCMonth()] + ' ' + date.getUTCDate();
             var numStr = String(time);
-            dummyXArr.push([numStr, dateStr]);
-        }
+            return [numStr, dateStr];
+        });
 
         return(
             <View style={styles.graph}>
                 <Svg height={this.state.height + 20} width={this.state.width + 20}>
                     <SVGText
-                        fill={graphColorSecondary}
+                        fill={this.props.graphColorSecondary}
                         fontSize="8"
                         x="18"
                         y="0">
                         {this.props.yUnit}
                     </SVGText>
                     <SVGText
-                        fill={graphColorSecondary}
+                        fill={this.props.graphColorSecondary}
                         fontSize="8"
                         x={this.state.width}
                         y={this.state.height - 25}>
@@ -242,21 +229,21 @@ const Graph = React.createClass({
                         fill="none"
                         stroke={this.props.graphColorSecondary}
                     />
-                    {dummyYArr.map(function(object, i){
+                    {_.range(yDensity - 1).map(function(object, i){
                         return  <SVGText 
-                                fill={graphColorSecondary}
+                                fill={that.props.graphColorSecondary}
                                 x="18"
-                                y={h - (i + 1) * yVisualSpacing - 8}>
+                                y={that.state.height - (i + 1) * yVisualSpacing - 8}>
                                 {String(Math.round(yMin + 
                                             (i + 1) * yNumericalSpacing))}
                             </SVGText>;
                     })}
-                    {dummyXArr.map(function(object, i){
+                    {xArr.map(function(object, i){
                         return  <SVGText 
                                 textAnchor="middle"
-                                fill={graphColorSecondary}
+                                fill={that.props.graphColorSecondary}
                                 x={((i + 1) * xVisualSpacing)}
-                                y={ h - 20 }>
+                                y={ that.state.height - 20 }>
                                 {object[dateMode]}
                             </SVGText>;
                     })}
