@@ -1,6 +1,6 @@
 {
   "name": "react-native-line-plot",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Make line plots in react-native",
   "main": "graph.js",
   "scripts": {
