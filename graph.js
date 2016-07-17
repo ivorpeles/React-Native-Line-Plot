@@ -73,11 +73,22 @@ const Graph = React.createClass({
         var scaledData = [];
         for (var i = 0; i < l; i++) {
             var x = (flippedData[i][0] - x_min) * w
-                /(x_scale * 1.0);
+                /(x_scale);
             var y = (flippedData[i][1] - y_min) * h
-                /(y_scale * 1.0);
-            scaledData.push([x + 10, h - y + 5]);
+                /(y_scale);
+            scaledData.push([x + 10, h - y + 15]);
         }
+        var lastSegment = scaledData.slice(-2);
+        var x = lastSegment[0][0];
+        var y = lastSegment[0][1];
+        var u = lastSegment[1][0];
+        var v = lastSegment[1][1];
+        var d = Math.sqrt(Math.pow(x-u, 2) + Math.pow(v-y,2));
+        var c = (d - 8) / d;
+        var u_p = u * c;
+        var v_p = v * c;
+        scaledData.pop();
+        scaledData.push([u_p, v_p]);
         return scaledData;
     }, 
     stringifyData: function (data) {
@@ -88,7 +99,6 @@ const Graph = React.createClass({
                 + String(data[i][1]) + " ";
         }
         return outputStr;
-
     },
     getLinePlotArrow: function (data) {
         /* 
@@ -105,14 +115,14 @@ const Graph = React.createClass({
         const u = arr[1][0];
         const v = arr[1][1];
         // The slope of the line segment, and the perpendicular slope.
-        const slope = ((v - y) * 1.0) / ((u - x) * 1.0);
+        const slope = (v - y) / (u - x);
         const perp = -1.0 / slope;
         // The euclidean distance between (x,y) and (u,v)
         const d = Math.sqrt(Math.pow(u-x, 2) + Math.pow(v-y, 2));
         // w and e are the width and extension factors respectively for the
         // graph arrow
-        const w = 5.0 / Math.sqrt(1 + Math.pow(perp, 2));
-        const e = 8.0 / Math.sqrt(1 + Math.pow(slope, 2));
+        const w = 5 / Math.sqrt(1 + Math.pow(perp, 2));
+        const e = 8 / Math.sqrt(1 + Math.pow(slope, 2));
         const tip = String(u + e) + "," + String(v + ((slope * e))) + " ";
         const s1 = String(u + w) + "," + String(v + (w * perp)) + " ";
         const s2 = String(u - w) + "," + String(v - (w * perp)) + " ";
@@ -149,7 +159,7 @@ const Graph = React.createClass({
     getYTicks: function () {
         const ticks = this.props.yAxisDensity || 9;
         const h = this.state.height;
-        const spacing = h / ( 1.0 * ticks ); 
+        const spacing = h / ( ticks ); 
         var outputStr = "";
         for (var i = 1; i < ticks; i++) {
             outputStr += "M10 " + String(i * spacing) 
@@ -165,7 +175,7 @@ const Graph = React.createClass({
         var data = this.getProcessedData();
         const yDensity = this.props.yAxisDensity || 9;
         const yVisualSpacing = (this.state.height)
-            / (yDensity * 1.0);
+            / (yDensity);
 
         var yArr = [];
         for (var i = 0; i < data.length; i++){
@@ -174,15 +184,13 @@ const Graph = React.createClass({
         const yMax = Math.max(...yArr);
         const yMin = Math.min(...yArr);
         const yRange = yMax - yMin;
-        const yNumericalSpacing = yRange / (1.0 * yDensity);
+        const yNumericalSpacing = yRange / (yDensity);
         var dummyYArr = [];
         for (var i = 1; i < yDensity; i++){
             dummyYArr.push(1);
         }
-
-
         const xDensity = this.props.xAxisDensity || 6;
-        const xVisualSpacing = (this.state.width) / (xDensity * 1.0);
+        const xVisualSpacing = (this.state.width) / (xDensity);
         var xArr = [];
         for (var i = 0; i < data.length; i++){
             xArr.push(rData[i][0]);
@@ -190,7 +198,7 @@ const Graph = React.createClass({
         const xMax = Math.max(...xArr);
         const xMin = Math.min(...xArr);
         const xRange = xMax - xMin;
-        const xNumericalSpacing = xRange / (1.0 * xDensity);
+        const xNumericalSpacing = xRange / (xDensity);
         var dummyXArr = [];
         for (var i = 1; i < xDensity; i++){
             var time = Math.round(xMin + (xNumericalSpacing * i));
