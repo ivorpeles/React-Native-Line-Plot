@@ -45,51 +45,30 @@ const Graph = React.createClass({
         }
     },
     getProcessedData () {
-        // Inputted Data.
-        var rawData = this.props.data;       
-        // Height and width of graph
         const h = this.state.height;
         const w = this.state.width;
-        // Length of raw data.
-        const l = rawData.length
-        var flippedData = rawData.sort({function (a,b) {
-            var x = a[0];
-            var y = b[0];
-            return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+        var data = this.props.data.sort({function (x,y) {
+            return ((x[0] < y[0]) ? -1 : ((x[0] > y[0]) ? 1 : 0));
         }});
-        for (var i = 0; i < l; i++) {
-            flippedData.push([rawData[i][0], rawData[i][1]]);
-        }
-        var y_arr = [];
-        var x_arr = [];
-        for (var i = 0; i < l; i++) {
-            x_arr.push(flippedData[i][0]);
-            y_arr.push(flippedData[i][1]);
-        }
+        var y_arr = data.map((obj) => { return obj[1] });
+        var x_arr = data.map((obj) => { return obj[0] });
         const x_min = Math.min(...x_arr);
         const y_min = Math.min(...y_arr);
         const x_scale = Math.max(...x_arr) - x_min;
         const y_scale = Math.max(...y_arr) - y_min;
-        var scaledData = [];
-        for (var i = 0; i < l; i++) {
-            var x = (flippedData[i][0] - x_min) * w
-                /(x_scale);
-            var y = (flippedData[i][1] - y_min) * h
-                /(y_scale);
-            scaledData.push([x + 10, h - y + 15]);
-        }
-        var lastSegment = scaledData.slice(-2);
-        var x = lastSegment[0][0];
-        var y = lastSegment[0][1];
-        var u = lastSegment[1][0];
-        var v = lastSegment[1][1];
-        var d = Math.sqrt(Math.pow(x-u, 2) + Math.pow(v-y,2));
-        var c = (d - 8) / d;
-        var u_p = u * c;
-        var v_p = v * c;
-        scaledData.pop();
-        scaledData.push([u_p, v_p]);
-        return scaledData;
+        data = data.map((obj, index, array) => {
+            var x = ((obj[0] - x_min) * w / (x_scale)) + 10;
+            var y = h - ((obj[1] - y_min) * h / (y_scale)) + 15;
+            return [x, y];
+        });
+        const seg = data.slice(-2);
+        var u = seg[1][0];
+        var v = seg[1][1];
+        var d = Math.sqrt(Math.pow(seg[0][0] - u, 2) 
+                + Math.pow(seg[0][1] - v, 2));
+        data.pop();
+        data.push([u,v].map((obj) => { return obj * (d - 8) / d}));
+        return data;
     }, 
     stringifyData: function (data) {
         var outputStr = "";
@@ -240,7 +219,7 @@ const Graph = React.createClass({
                         strokeWidth={this.props.graphWidthSecondary || "4"}
                     />
                     <Polygon
-                        points={this.getAxisArrowNorth()}
+                        points="10,2 6,10 14,10"
                         fill={this.props.graphColorSecondary}
                         stroke={this.props.graphColorSecondary}
                         strokeWidth="1"
@@ -301,5 +280,3 @@ const styles = StyleSheet.create({
 });
 
 module.exports = Graph;
-
-
