@@ -38,7 +38,7 @@ var GraphTestProject = React.createClass({
     render () {
         <View style={styles.container}>
             <Graph
-                data={[]}
+                data={[[0,0], [33, 30], [66,25], [99,50]]}
                 graphColorPrimary='#000000'
                 graphColorSecondary='#FF0000'
                 xUnit='foo'
