@@ -57,8 +57,8 @@ const Graph = React.createClass({
         const x_scale = Math.max(...x_arr) - x_min;
         const y_scale = Math.max(...y_arr) - y_min;
         data = data.map((obj, index, array) => {
-            var x = ((obj[0] - x_min) * w / (x_scale)) + 10;
-            var y = h - ((obj[1] - y_min) * h / (y_scale)) + 15;
+            var x = ((obj[0] - x_min) * w / (x_scale));
+            var y = h - ((obj[1] - y_min) * h / (y_scale)) + 8;
             return [x, y];
         });
         const seg = data.slice(-2);
