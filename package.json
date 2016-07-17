@@ -12,5 +12,9 @@
     "plot"
   ],
   "author": "ivor",
-  "license": "MIT"
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ivorpeles/React-Native-Line-Plot.git"
+  }
 }
