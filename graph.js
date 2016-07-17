@@ -85,8 +85,7 @@ const Graph = React.createClass({
          * coordinate pairs that define the last line segment of our line
          * plot. Call these points (x,y) and (u,v).
          * */
-        var arr = data;
-        arr = arr.slice(-2); 
+        var arr = data.slice(-2); 
         // (x,y) is the left-most point in the line segment.
         const x = arr[0][0];
         const y = arr[0][1];
@@ -97,7 +96,7 @@ const Graph = React.createClass({
         const slope = (v - y) / (u - x);
         const perp = -1 / slope ;
         // The euclidean distance between (x,y) and (u,v)
-        const d = Math.sqrt(Math.pow(u-x, 2) + Math.pow(v-y, 2));
+        const d = Math.sqrt(Math.pow(u - x, 2) + Math.pow(v - y, 2));
         // w and e are the width and extension factors respectively for the
         // graph arrow
         const w = 5 / Math.sqrt(1 + Math.pow(perp, 2));
@@ -110,9 +109,6 @@ const Graph = React.createClass({
     getAxes: function () {
         return "10,10 10," + String(this.state.height) 
             + " " + String(this.state.width)+ "," + String(this.state.height);
-    },
-    getAxisArrowNorth: function () {
-        return "10,2 6,10 14,10";
     },
     getAxisArrowEast: function () {
         return String(this.state.width + 8) 
