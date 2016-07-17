@@ -3,7 +3,7 @@
 ####Installation
 
 The only dependency for this package is React Native SVG. Installation
-instructions for SVG can be found here:
+instructions for SVG can be found at
 https://github.com/magicismight/react-native-svg/blob/master/README.md
 or below:
 
