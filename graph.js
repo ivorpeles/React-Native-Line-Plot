@@ -46,7 +46,7 @@ const Graph = React.createClass({
     },
     getProcessedData () {
         const h = this.state.height;
-        const w = this.state.width;
+        const w = this.state.width - 10;
         var data = this.props.data.sort({function (x,y) {
             return ((x[0] < y[0]) ? -1 : ((x[0] > y[0]) ? 1 : 0));
         }});
@@ -57,17 +57,11 @@ const Graph = React.createClass({
         const x_scale = Math.max(...x_arr) - x_min;
         const y_scale = Math.max(...y_arr) - y_min;
         data = data.map((obj, index, array) => {
-            var x = ((obj[0] - x_min) * w / (x_scale));
-            var y = h - ((obj[1] - y_min) * h / (y_scale)) + 8;
+            var x = ((obj[0] - x_min) * w / (x_scale)) + 10;
+            var y = h - ((obj[1] - y_min) * h / (y_scale));
+            if (!y) { y = 8 }
             return [x, y];
         });
-        const seg = data.slice(-2);
-        var u = seg[1][0];
-        var v = seg[1][1];
-        var d = Math.sqrt(Math.pow(seg[0][0] - u, 2) 
-                + Math.pow(seg[0][1] - v, 2));
-        data.pop();
-        data.push([u,v].map((obj) => { return obj * (d - 8) / d}));
         return data;
     }, 
     stringifyData: function (data) {
@@ -134,7 +128,7 @@ const Graph = React.createClass({
     getYTicks: function () {
         const ticks = this.props.yAxisDensity || 9;
         const h = this.state.height;
-        const spacing = h / ( ticks ); 
+        const spacing = h / ticks; 
         var outputStr = "";
         for (var i = 1; i < ticks; i++) {
             outputStr += "M10 " + String(i * spacing) 
@@ -149,7 +143,7 @@ const Graph = React.createClass({
         var data = this.getProcessedData();
 
         const yDensity = this.props.yAxisDensity || 9;
-        const yVisualSpacing = this.state.height / yDensity;
+        const yVisualSpacing = (this.state.height) / yDensity;
         var yArr = rData.map((obj) => { return obj[1] });
         const yMax = Math.max(...yArr);
         const yMin = Math.min(...yArr);
@@ -162,7 +156,7 @@ const Graph = React.createClass({
         const xMin = Math.min(...xArr);
         const xRange = Math.max(...xArr) - xMin;
         const xNumericalSpacing = xRange / xDensity;
-        xArr = _.range(xDensity - 1).map((obj) => {
+        xArr = _.range(1, xDensity).map((obj) => {
             const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
                 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
             var time = Math.round(xMin + (xNumericalSpacing * obj));
@@ -174,7 +168,7 @@ const Graph = React.createClass({
 
         return(
             <View style={styles.graph}>
-                <Svg height={this.state.height + 20} width={this.state.width + 20}>
+                <Svg height={this.state.height + 10} width={this.state.width + 30}>
                     <SVGText
                         fill={this.props.graphColorSecondary}
                         fontSize="8"
@@ -185,7 +179,7 @@ const Graph = React.createClass({
                     <SVGText
                         fill={this.props.graphColorSecondary}
                         fontSize="8"
-                        x={this.state.width}
+                        x={this.state.width - 2 * this.props.xUnit.length}
                         y={this.state.height - 25}>
                         {this.props.xUnit}
                     </SVGText>
